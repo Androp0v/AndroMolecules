@@ -21,7 +21,7 @@ You can also build it with:
 python3 setup.py build_ext --inplace
 ```
 
-### Adding new C files
+### Adding new C extension files
 Edit `setup.py` to add a new `Extension` under `ext_modules`:
 ```
 Extension('andromolecules.submodule.file', ['andromolecules/submodule/file.c'])
@@ -38,6 +38,13 @@ Run:
 ```
 twine upload dist/*
 ```
+
+### Style guide
+For Python style guides, refer to [PEP8](https://www.python.org/dev/peps/pep-0008/), with one exception:
+
+> Don't use spaces around the = sign when used to indicate a keyword argument, or when used to indicate a default value for an unannotated function parameter.
+
+Using spaces aroung the = sign in function arguments actually improve readability IMHO.
 
 ### Useful resources online
 [Numpy C Code explanations](https://numpy.org/doc/stable/reference/internals.code-explanations.html)

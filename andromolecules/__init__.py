@@ -1,4 +1,4 @@
 # AndroMolecules
 
-from potentials import lennard_jones_potential
-from motions import lennard_jones_motion
+from andromolecules.potentials import lennard_jones_potential
+from andromolecules.motions import lennard_jones_motion

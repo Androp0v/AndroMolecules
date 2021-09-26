@@ -26,6 +26,7 @@ Edit `setup.py` to add a new `Extension` under `ext_modules`:
 ```
 Extension('andromolecules.submodule.file', ['andromolecules/submodule/file.c'])
 ```
+And then create the referred C files and headers in the specified location.
 
 ### Create new source code and wheel
 Run:
@@ -44,7 +45,7 @@ For Python style guides, refer to [PEP8](https://www.python.org/dev/peps/pep-000
 
 > Don't use spaces around the = sign when used to indicate a keyword argument, or when used to indicate a default value for an unannotated function parameter.
 
-Using spaces aroung the = sign in function arguments actually improve readability IMHO.
+Using spaces aroung the = sign in function arguments actually improves readability IMHO.
 
 ### Useful resources online
 [Numpy C Code explanations](https://numpy.org/doc/stable/reference/internals.code-explanations.html)

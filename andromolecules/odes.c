@@ -14,8 +14,8 @@ static PyMethodDef odes_methods[] = {
 
 static struct PyModuleDef odes_definition = { 
     PyModuleDef_HEAD_INIT,
-    "odes",
-    "A Python (sub?)module for solving Ordinary Differential Equations.",
+    "andromolecules.odes",
+    "A submodule for solving Ordinary Differential Equations.",
     -1, 
     odes_methods
 };

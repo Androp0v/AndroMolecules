@@ -1,6 +1,6 @@
 # AndroMolecules
 
-from potentials import lennard_jones_potential
+from andromolecules.potentials import lennard_jones_potential
 
 def lennard_jones_motion(positions, deltat):
     """

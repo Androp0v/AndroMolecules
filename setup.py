@@ -14,7 +14,7 @@ setup(
         author_email = "<raul.monton@unknown.invalid>",
         description = DESCRIPTION,
         long_description = LONG_DESCRIPTION,
-        packages = find_packages(),
+        packages = ['andromolecules'],
         ext_modules=[Extension('andromolecules.odes', 
                                ['andromolecules/odes.c'], 
                                include_dirs = [np.get_include()],

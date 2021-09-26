@@ -35,30 +35,53 @@ PyMODINIT_FUNC PyInit_odes(void) {
 
 static PyObject *runge_kutta_4(PyObject *self, PyObject *args) {
         
-    PyArrayObject *positions, *forces;
+    PyArrayObject *positions, *velocities, *forces;
 
-    if (!PyArg_ParseTuple(args, "O!O!", 
-                          &PyArray_Type, &positions, 
+    if (!PyArg_ParseTuple(args, "O!O!O!", 
+                          &PyArray_Type, &positions,
+                          &PyArray_Type, &velocities,
                           &PyArray_Type, &forces)) {
         return NULL;
     }
     
     int positionCount = positions->dimensions[0];
+    int velocitiesCount = velocities->dimensions[0];
     int forceCount = forces->dimensions[0];
 
-    if (positionCount != forceCount) {
-        // Abort if the number of forces is different to the number of positions
+    if ((positionCount != velocitiesCount) || (positionCount != forceCount)) {
+        // Abort if the particle properties arrays don't have the same length
         return NULL;
     }
 
-    /// Main loop
+    /*** Main loop ***/
 
-    #pragma omp parallel
+    // Define the Runge-Kutta coeficcients
+    npy_float64 k1x, k2x, k3x, k4x, k1v, k2v, k3v, k4v;
+    npy_float64 deltat = 0.01;
+    npy_float64 mass = 1.0;
+
+    // Loop over all particles to get 1st RK coefficient
     for (npy_intp i = 0; i < positionCount; i++) {
         npy_float64 *positionPointer = (double *) PyArray_GetPtr(positions, &i);
-        *positionPointer += 1;
+        npy_float64 *velocityPointer = (double *) PyArray_GetPtr(velocities, &i);
         npy_float64 *forcePointer = (double *) PyArray_GetPtr(forces, &i);
-        *forcePointer += 1;
+
+        k1x = *velocityPointer * deltat;
+        k1v = *forcePointer / mass * deltat;
+    }
+
+    // Loop over all particles to get 2nd RK coefficient
+    for (npy_intp i = 0; i < positionCount; i++) {
+        npy_float64 *positionPointer = (double *) PyArray_GetPtr(positions, &i);
+        npy_float64 *velocityPointer = (double *) PyArray_GetPtr(velocities, &i);
+        npy_float64 *forcePointer = (double *) PyArray_GetPtr(forces, &i);
+
+        k1x = *velocityPointer * deltat;
+        k1v = *forcePointer / mass * deltat;
+        k2x = (*velocityPointer + 0.5 * k1v) * deltat;
+        k2v = *forcePointer / mass * deltat;
+        //*positionPointer += 1;
+        //*forcePointer += 1;
     }
 
     Py_RETURN_NONE;

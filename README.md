@@ -2,10 +2,20 @@
 Package containing useful functions for molecular simulations, performing as fast as I could make them.
 
 ## How to use
+Example: compute Lennard-Jones potential of a system of particles in 1D.
 ```
 import andromolecules as am
+import numpy as np
 
-# TO-DO
+# Create 10 particles randomly over a line 100 armstrongs long
+particle_positions = np.random.random(10) * 100
+
+# Define the parameters of the Lennard-Jones potential
+epsilon = 1
+sigma = 1
+
+# Compute the Lennard-Jones potential of the system
+lennard_jones_energy = am._potentials._lennard_jones_potential(particle_positions, epsilon, sigma)
 ```
 
 ## Contributing

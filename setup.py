@@ -19,7 +19,12 @@ setup(
                                ['andromolecules/odes.c'], 
                                include_dirs = [np.get_include()],
                                # define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')]
-                     )],
+                     ),
+                     Extension('andromolecules._potentials', 
+                               ['andromolecules/_potentials.c'], 
+                               include_dirs = [np.get_include()]
+                     )
+                    ],
         install_requires = ['numpy>=1.19'], # Older NumPy versions may also work
         
         keywords=['python', 'first package'],

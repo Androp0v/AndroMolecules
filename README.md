@@ -58,4 +58,10 @@ For Python style guides, refer to [PEP8](https://www.python.org/dev/peps/pep-000
 Using spaces aroung the = sign in function arguments actually improves readability IMHO.
 
 ### Useful resources online
-[Numpy C Code explanations](https://numpy.org/doc/stable/reference/internals.code-explanations.html)
+[NumPy C Code explanations](https://numpy.org/doc/stable/reference/internals.code-explanations.html)
+
+[C Extensions for NumPy Arrays (SciPy cookbook)](https://scipy-cookbook.readthedocs.io/items/C_Extensions_NumPy_arrays.html)
+
+[NumPy Array API](https://numpy.org/devdocs/reference/c-api/array.html)
+
+[Python C extension example](https://gist.github.com/physacco/2e1b52415f3a964ad2a542a99bebed8f)

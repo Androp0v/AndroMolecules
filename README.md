@@ -15,7 +15,7 @@ epsilon = 1
 sigma = 1
 
 # Compute the Lennard-Jones potential of the system
-lennard_jones_energy = am._potentials._lennard_jones_potential(particle_positions, epsilon, sigma)
+potential_energy = am.lennard_jones_potential(particle_positions, epsilon, sigma)
 ```
 
 ## Contributing

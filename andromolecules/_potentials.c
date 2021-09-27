@@ -51,8 +51,16 @@ static PyObject *_lennard_jones_potential(PyObject *self, PyObject *args) {
 
     for (npy_intp i = 0; i < positionCount; i++) {
         for (npy_intp j = 0; j < i; j++) {
-            npy_float64 *positionPointer = (double *) PyArray_GetPtr(positions, &i);
-            double distance = *positionPointer;
+
+            if (i == j) {
+                break;
+            }
+
+            npy_float64 *positionPointer1 = (double *) PyArray_GetPtr(positions, &i);
+            npy_float64 *positionPointer2 = (double *) PyArray_GetPtr(positions, &j);
+
+            // Compute distance
+            double distance = fabs(*positionPointer1 - *positionPointer2);
 
             totalEnergy += 4 * epsilon * ( pow(sigma / distance, 12) 
                 - pow(sigma / distance, 6));

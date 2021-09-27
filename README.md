@@ -3,7 +3,7 @@ Package containing useful functions for molecular simulations, performing as fas
 
 ## How to use
 Example: compute Lennard-Jones potential of a system of particles in 1D.
-```
+```python
 import andromolecules as am
 import numpy as np
 

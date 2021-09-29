@@ -7,8 +7,7 @@ from andromolecules._potentials import _lennard_jones_potential
 def lennard_jones_potential(
         positions, 
         epsilon, 
-        sigma,
-        particle_types = None):
+        sigma):
     """
     Computes the Lennard-Jones potential of a system of particles.
 

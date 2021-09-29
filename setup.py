@@ -23,6 +23,10 @@ setup(
                      Extension('andromolecules._potentials', 
                                ['andromolecules/_potentials.c'], 
                                include_dirs = [np.get_include()]
+                     ),
+                     Extension('andromolecules._forces', 
+                               ['andromolecules/_forces.c'], 
+                               include_dirs = [np.get_include()]
                      )
                     ],
         install_requires = ['numpy>=1.19'], # Older NumPy versions may also work

@@ -4,14 +4,19 @@
 #include "_potentials.h"
 
 /*================== MODULE CONFIG ==================*/
+
 static PyMethodDef _potentials_methods[] = { 
     {   
-        "_lennard_jones_potential", _lennard_jones_potential, METH_VARARGS,
+        "_lennard_jones_potential", 
+        _lennard_jones_potential, 
+        METH_VARARGS,
         "Lennard-Jones potential.",
     },
     {
-        "_lennard_jones_potential_mixed", _lennard_jones_potential_mixed, 
-        METH_VARARGS, "Lennard-Jones potential using Lorentz-Berthelot mixing rules."
+        "_lennard_jones_potential_mixed", 
+        _lennard_jones_potential_mixed, 
+        METH_VARARGS, 
+        "Lennard-Jones potential using Lorentz-Berthelot mixing rules."
     },
     {NULL, NULL, 0, NULL}
 };

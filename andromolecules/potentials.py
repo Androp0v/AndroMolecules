@@ -1,5 +1,6 @@
 # AndroMolecules
 
+import numbers
 import numpy
 from andromolecules._potentials import _lennard_jones_potential
 
@@ -15,24 +16,16 @@ def lennard_jones_potential(
     ----------
     positions : ndarray
         The array with the positions of all the particles in the system.
-    epsilon : float64, dict
+    epsilon : float64, ndarray
         Intensity of the Lennard-Jones potential (depth of the potential well), 
-        in eV units. If the system is composed of particles of different types, 
-        epsilon is a dict where keys are the particle types and values are the 
-        epsilon values for that particle type.
-    sigma : float64, dict
+        in eV units. If an array is passed, it's interpreted as the epsilon
+        value for each particle in the positions array, and interactions are 
+        computed using the Lorentz-Berthelot mixing rules.
+    sigma : float64, ndarray
         Length at which the Lennard-Jones potential between two atoms becomes 0,
-        in Å units. If the system is composed of particles of different types, 
-        sigma is a dict where keys are the particle types and values are the 
-        sigma values for that particle type.
-    particle_types : NoneType, list, ndarray
-        If None, particles in the system are assumed to be identical and epsilon
-        and sigma are identical for all particles. If particle_types is a list 
-        or a ndarray it must be the same length as positions in a way that the 
-        ith component of the particle_types array describes the type of the ith
-        particle. The potential between two particles A and B is computed using
-        the Lorentz-Berthelot mixing rules.
-
+        in Å units. If an array is passed, it's interpreted as the sigma value 
+        for each particle in the positions array, and interactions are computed 
+        using the Lorentz-Berthelot mixing rules.
     Returns
     -------
     out : float64
@@ -40,6 +33,7 @@ def lennard_jones_potential(
         in eV units.
 
     """
+
     if not isinstance(positions, numpy.ndarray):
         raise TypeError("'Positions' argument is not a NumPy array.")
 
@@ -49,24 +43,47 @@ def lennard_jones_potential(
     if not positions.flags.contiguous:
         raise NotImplementedError("Only contiguous NumPy arrays are supported.")
 
-    if particle_types != None:
-        if not isInstance(epsilon, dict):
-            raise TypeError("Epsilon parameter must be a dict when particle_types is not None.")
-        if not isInstance(epsilon, dict):
-            raise TypeError("Sigma parameter must be a dict when particle_types is not None.")
-
-        epsilon_array = numpy.empty(len(particle_types))
-        sigma_array = numpy.empty(len(particle_types))
-
-        for i, particle_type in enumerate(particle_types):
-            epsilon_array[i] = epsilon[particle_type]
-            sigma_array[i] = sigma[particle_type]
-
-        raise _lennard_jones_potential_mixed(positions, epsilon_array, sigma_array)
+    if isinstance(epsilon, numpy.ndarray):
+        single_epsilon = False
+    elif isinstance(epsilon, numbers.Number):
+        single_epsilon = True
     else:
-        if not epsilon.isNumeric():
+        raise TypeError("'epsilon' argument is not a number nor a NumPy array.")
+
+    if isinstance(sigma, numpy.ndarray):
+        single_sigma = False
+    elif isinstance(sigma, numbers.Number):
+        single_sigma = True
+    else:
+        raise TypeError("'sigma' argument is not a number nor a NumPy array.")
+
+    if not (single_epsilon and single_sigma):
+
+        # Invoke the C function with epsilon, sigma array arguments
+
+        array_length = len(positions)
+
+        if not single_epsilon:
+            epsilon_array = epsilon
+        else:
+            # Fill the array with the single-valued epsilon
+            epsilon_array = numpy.full(array_length)
+
+        if not single_sigma:
+            sigma_array = sigma
+        else:
+            # Fill the array with the single-valued sigma
+            sigma_array = numpy.full(array_length)
+
+        return _lennard_jones_potential_mixed(positions, epsilon_array, sigma_array)
+
+    else:
+
+        # Invoke the C function with epsilon, sigma float64 arguments
+
+        if not isinstance(epsilon, numbers.Number):
             raise TypeError("Epsilon parameter must be a numerical type")
-        if not sigma.isNumeric():
+        if not isinstance(sigma, numbers.Number):
             raise TypeError("Sigma parameter must be a numerical type")
 
         return _lennard_jones_potential(positions, epsilon, sigma)
